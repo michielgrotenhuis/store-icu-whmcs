@@ -1,0 +1,35 @@
+{
+    "schema": "1.0",
+    "type": "whmcs-servers",
+    "name": "store-icu",
+    "license": "MIT",
+    "category": "provisioning",
+    "description": {
+        "name": "Store.icu Ecommerce Sitebuilder",
+        "tagline": "Integrate WHMCS with Store.icu ecommerce sitebuilder for web hosting companies.",
+        "long": "This module integrates with the Store.icu ecommerce sitebuilder API, allowing web hosting companies to offer store-building services to their clients with fully automated provisioning and management.",
+        "features": [
+            "Automated account provisioning and store creation",
+            "Suspend, unsuspend, and terminate functionality",
+            "Single sign-on to store admin panel",
+            "Admin interface for viewing client's stores",
+            "Package upgrade/downgrade capabilities"
+        ]
+    },
+    "logo": {
+        "filename": "logo.png"
+    },
+    "support": {
+        "homepage": "https://store.icu/",
+        "learn_more": "https://store.icu/whmcs-integration",
+        "email": "support@store.icu",
+        "support_url": "https://support.store.icu/",
+        "docs_url": "https://docs.store.icu/whmcs-module/"
+    },
+    "authors": [
+        {
+            "name": "Store.icu Team",
+            "homepage": "https://store.icu/"
+        }
+    ]
+}
