@@ -754,6 +754,9 @@ function store_icu_ChangePackage($params)
 function store_icu_AdminServicesTabFields($params)
 {
     try {
+        // Load language variables (use admin language)
+        $lang = store_icu_LoadLanguage();
+        
         // Get store information from database
         $storeInfo = Capsule::table('mod_store_icu')
             ->where('service_id', $params['serviceid'])
@@ -761,7 +764,7 @@ function store_icu_AdminServicesTabFields($params)
             
         if (!$storeInfo) {
             return [
-                'Store Information' => 'No store information found for this service',
+                $lang['store_info'] => $lang['no_store_found'],
             ];
         }
         
@@ -769,7 +772,7 @@ function store_icu_AdminServicesTabFields($params)
         $authResult = store_icu_Authenticate($params);
         if (!$authResult['success']) {
             return [
-                'Store Information' => 'API Authentication Error: ' . $authResult['error'],
+                $lang['store_info'] => $lang['api_auth_error'] . ': ' . $authResult['error'],
             ];
         }
         
@@ -786,7 +789,7 @@ function store_icu_AdminServicesTabFields($params)
         
         if (!$response['success']) {
             return [
-                'Store Information' => 'API Error: ' . (isset($response['error']) ? $response['error'] : 'Unknown error'),
+                $lang['store_info'] => $lang['api_error'] . ': ' . (isset($response['error']) ? $response['error'] : 'Unknown error'),
             ];
         }
         
@@ -794,7 +797,7 @@ function store_icu_AdminServicesTabFields($params)
         $storeList = '';
         if (isset($response['data']['stores']) && count($response['data']['stores']) > 0) {
             $storeList = '<table class="table table-bordered">';
-            $storeList .= '<thead><tr><th>Shop Handle</th><th>Status</th><th>Created</th></tr></thead>';
+            $storeList .= '<thead><tr><th>' . $lang['shop_handle'] . '</th><th>' . $lang['status'] . '</th><th>' . $lang['created'] . '</th></tr></thead>';
             $storeList .= '<tbody>';
             
             foreach ($response['data']['stores'] as $store) {
@@ -807,14 +810,14 @@ function store_icu_AdminServicesTabFields($params)
             
             $storeList .= '</tbody></table>';
         } else {
-            $storeList = 'No stores found for this user';
+            $storeList = $lang['no_stores_found'];
         }
         
         return [
-            'Shop Handle' => $storeInfo->shop_handle,
-            'Status' => ucfirst($storeInfo->status),
-            'Created At' => $storeInfo->created_at,
-            'Stores' => $storeList,
+            $lang['shop_handle'] => $storeInfo->shop_handle,
+            $lang['status'] => ucfirst($storeInfo->status),
+            $lang['created'] => $storeInfo->created_at,
+            $lang['stores'] => $storeList,
         ];
     } catch (\Exception $e) {
         logModuleCall(
@@ -825,8 +828,11 @@ function store_icu_AdminServicesTabFields($params)
             $e->getTraceAsString()
         );
         
+        // Load language variables even in case of error
+        $lang = store_icu_LoadLanguage();
+        
         return [
-            'Error' => 'An error occurred: ' . $e->getMessage(),
+            'Error' => $lang['error_occurred'] . ': ' . $e->getMessage(),
         ];
     }
 }
@@ -915,6 +921,9 @@ function store_icu_ServiceSingleSignOn($params)
 function store_icu_ClientArea($params)
 {
     try {
+        // Load language variables
+        $lang = store_icu_LoadLanguage($params['clientsdetails']['language']);
+        
         // Get store information from database
         $storeInfo = Capsule::table('mod_store_icu')
             ->where('service_id', $params['serviceid'])
@@ -924,7 +933,8 @@ function store_icu_ClientArea($params)
             return [
                 'templatefile' => 'templates/error',
                 'vars' => [
-                    'error' => 'No store information found for this service',
+                    'error' => $lang['no_store_found'],
+                    'LANG' => $lang,
                 ],
             ];
         }
@@ -935,7 +945,7 @@ function store_icu_ClientArea($params)
             'shop_handle' => $storeInfo->shop_handle,
             'status' => ucfirst($storeInfo->status),
             'created_at' => $storeInfo->created_at,
-            'LANG' => $params['_lang'],
+            'LANG' => $lang,
         ];
         
         return [
@@ -951,10 +961,14 @@ function store_icu_ClientArea($params)
             $e->getTraceAsString()
         );
         
+        // Load language variables even in case of error
+        $lang = store_icu_LoadLanguage($params['clientsdetails']['language']);
+        
         return [
             'templatefile' => 'templates/error',
             'vars' => [
-                'error' => 'An error occurred: ' . $e->getMessage(),
+                'error' => $lang['error_occurred'] . ': ' . $e->getMessage(),
+                'LANG' => $lang,
             ],
         ];
     }
