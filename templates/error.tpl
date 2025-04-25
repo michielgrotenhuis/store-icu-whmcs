@@ -4,6 +4,6 @@
 
 <div class="text-center">
     <a href="submitticket.php" class="btn btn-default">
-        <i class="fas fa-ticket-alt"></i> Contact Support
+        <i class="fas fa-ticket-alt"></i> {$LANG.contact_support}
     </a>
 </div>
