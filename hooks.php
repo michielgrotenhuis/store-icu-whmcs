@@ -42,6 +42,7 @@ add_hook('ClientAreaProductDetailsActionLinks', 1, function($vars) {
     }
     
     return [];
+});
 
 /**
  * Add information to the client's product details sidebar
